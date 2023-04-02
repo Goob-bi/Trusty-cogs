@@ -12,6 +12,10 @@ log = logging.getLogger("Notsobot")
 
 IMAGE_LINKS: Pattern = re.compile(
     r"(https?:\/\/[^\"\'\s]*\.(?:png|jpg|jpeg|gif|png|svg)(\?size=[0-9]*)?)", flags=re.I
+    """r"(https?:\/\/[^\"\'\s]*\.(?:png|jpg|jpeg|gif|png|svg)(\?size=[0-9]*)?)", flags=re.I"""
+)
+IMAGE_URLS: Pattern = re.compile(
+    r"(https?:\/\/[^\"\'\s]*\.?)", flags=re.I
 )
 EMOJI_REGEX: Pattern = re.compile(r"(<(a)?:[a-zA-Z0-9\_]+:([0-9]+)>)")
 MENTION_REGEX: Pattern = re.compile(r"<@!?([0-9]+)>")
@@ -32,6 +36,7 @@ class ImageFinder(Converter):
         matches = IMAGE_LINKS.finditer(argument)
         emojis = EMOJI_REGEX.finditer(argument)
         ids = ID_REGEX.finditer(argument)
+        testmatches = IMAGE_URLS.finditer(argument)
         urls = []
         if matches:
             for match in matches:
@@ -74,6 +79,10 @@ class ImageFinder(Converter):
                     continue
 
         if not urls:
+            if testmatches:
+                for match in matches:
+                    urls.append(match.group(1))
+                    log.error(urls)
             raise BadArgument("No images provided.")
         return urls
 
