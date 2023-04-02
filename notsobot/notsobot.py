@@ -380,7 +380,9 @@ class NotSoBot(commands.Cog):
                             delta_x=2,
                             rigidity=0,
                         )
-                        i.resize(img.width, img.height)
+                        """keep converted image if original image is larger so upload isnt too big"""
+                        if img.width < 512:
+                            i.resize(img.width, img.height)
                         new_image.sequence.append(i)
             new_image.format = "gif"
             new_image.dispose = "background"
@@ -417,7 +419,10 @@ class NotSoBot(commands.Cog):
             if mime in self.gif_mimes:
                 task = self.bot.loop.run_in_executor(None, self.do_gmagik, b, frame_delay)
             else:
-                task = self.bot.loop.run_in_executor(None, self.do_magik, 2, b)
+                """i assume this happens when image is too large, we do gmagik anyway(idk how python works)"""
+                msgtest = await ctx.send(":brain:")
+                task = self.bot.loop.run_in_executor(None, self.do_gmagik, b, frame_delay)
+                """task = self.bot.loop.run_in_executor(None, self.do_magik, 2, b)"""
             try:
                 file, file_size = await asyncio.wait_for(task, timeout=120)
             except asyncio.TimeoutError:
@@ -429,6 +434,7 @@ class NotSoBot(commands.Cog):
             await self.safe_send(ctx, None, file, file_size)
             try:
                 await msg.delete()
+                await msgtest.delete()
             except discord.errors.NotFound:
                 pass
         b.close()
