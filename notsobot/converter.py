@@ -12,7 +12,6 @@ log = logging.getLogger("Notsobot")
 
 IMAGE_LINKS: Pattern = re.compile(
     r"(https?:\/\/[^\"\'\s]*\.(?:png|jpg|jpeg|gif|png|svg)(\?size=[0-9]*)?)", flags=re.I
-    """r"(https?:\/\/[^\"\'\s]*\.(?:png|jpg|jpeg|gif|png|svg)(\?size=[0-9]*)?)", flags=re.I"""
 )
 IMAGE_URLS: Pattern = re.compile(
     r"(https?:\/\/[^\"\'\s]*\.?)", flags=re.I
