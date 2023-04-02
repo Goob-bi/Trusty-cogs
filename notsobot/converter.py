@@ -1,11 +1,14 @@
 import discord
 import re
+import logging
 
 import unidecode
 from typing import Pattern, List, Union
 from redbot.core import commands
 from discord.ext.commands.converter import Converter
 from discord.ext.commands.errors import BadArgument
+
+log = logging.getLogger("Notsobot")
 
 IMAGE_LINKS: Pattern = re.compile(
     r"(https?:\/\/[^\"\'\s]*\.(?:png|jpg|jpeg|gif|png|svg)(\?size=[0-9]*)?)", flags=re.I
@@ -87,6 +90,8 @@ class ImageFinder(Converter):
             if message.embeds:
                 for embed in message.embeds:
                     urls.append(embed.image.url)
+                    log.error(embed.image.url)
+                    log.error(embed.thumbnail.url)
             match = IMAGE_LINKS.match(message.content)
             if match:
                 urls.append(match.group(1))
