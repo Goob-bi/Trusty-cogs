@@ -84,6 +84,9 @@ class ImageFinder(Converter):
             if message.attachments:
                 for attachment in message.attachments:
                     urls.append(attachment)
+            if message.embeds:
+                for embed in message.embeds:
+                    urls.append(embed.image.url)
             match = IMAGE_LINKS.match(message.content)
             if match:
                 urls.append(match.group(1))
