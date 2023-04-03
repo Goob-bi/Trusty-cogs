@@ -302,8 +302,8 @@ class NotSoBot(commands.Cog):
         """
         Apply magik to an image.
         """
-        if urls is None:
-            urls = await ImageFinder().search_for_images(ctx)
+        """if urls is None:"""
+        urls = await ImageFinder().search_for_images(ctx)
         async with ctx.typing():
             b, mime = await self.bytes_download(urls[0])
             if mime == "None":
@@ -403,8 +403,8 @@ class NotSoBot(commands.Cog):
     @commands.bot_has_permissions(attach_files=True)
     async def gmagik(self, ctx, urls: ImageFinder = None, frame_delay: int = 1):
         """Attempt to do magik on a gif"""
-        if urls is None:
-            urls = await ImageFinder().search_for_images(ctx)
+        """if urls is None:"""
+        urls = await ImageFinder().search_for_images(ctx)
         url = urls[0]
         msg = await ctx.send("ok, processing (this might take a while for big gifs)")
         async with ctx.typing():
