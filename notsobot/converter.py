@@ -80,8 +80,10 @@ class ImageFinder(Converter):
         if not urls:
             if testmatches:
                 for match in matches:
-                    urls.append(match.group(1))
-                    log.error(urls)
+                    newurl = match.group(1) + "/.png"
+                    urls.append(newurl)
+                    continue
+        if not urls:
             raise BadArgument("No images provided.")
         return urls
 
@@ -97,9 +99,12 @@ class ImageFinder(Converter):
                     urls.append(attachment)
             if message.embeds:
                 for embed in message.embeds:
-                    urls.append(embed.image.url)
-                    log.error(embed.image.url)
-                    log.error(embed.thumbnail.url)
+                    log.error("image embed: ", embed.image.url)
+                    log.error("thumbnail embed: ", embed.thumbnail.url)
+                    if embed.image.url:    
+                        urls.append(embed.image.url)
+                    if embed.thumbnail.url:    
+                        urls.append(embed.thumbnail.url)
             match = IMAGE_LINKS.match(message.content)
             if match:
                 urls.append(match.group(1))
