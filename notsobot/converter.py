@@ -79,7 +79,7 @@ class ImageFinder(Converter):
 
         if not urls:
             if testmatches:
-                for match in matches:
+                for match in testmatches:
                     newurl = match.group(1) + "/.png"
                     urls.append(newurl)
                     continue
@@ -101,9 +101,9 @@ class ImageFinder(Converter):
                 for embed in message.embeds:
                     log.error("image embed: ", embed.image.url)
                     log.error("thumbnail embed: ", embed.thumbnail.url)
-                    if embed.image.url:    
+                    if embed.image.url:
                         urls.append(embed.image.url)
-                    if embed.thumbnail.url:    
+                    if embed.thumbnail.url:
                         urls.append(embed.thumbnail.url)
             match = IMAGE_LINKS.match(message.content)
             if match:
